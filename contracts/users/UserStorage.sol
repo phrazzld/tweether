@@ -1,6 +1,8 @@
 pragma solidity ^0.5.10;
 
-contract UserStorage {
+import '../helpers/BaseStorage.sol';
+
+contract UserStorage is BaseStorage {
 
     mapping(uint => Profile) public profiles;
 
@@ -11,7 +13,7 @@ contract UserStorage {
 
     uint latestUserId = 0;
 
-    function createUser(bytes32 _username) public returns(uint) {
+    function createUser(bytes32 _username) public onlyController returns(uint) {
         latestUserId++;
 
         profiles[latestUserId] = Profile(latestUserId, _username);

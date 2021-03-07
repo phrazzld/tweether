@@ -1,6 +1,8 @@
 pragma solidity ^0.5.10;
 
-contract TweetStorage {
+import '../helpers/BaseStorage.sol';
+
+contract TweetStorage is BaseStorage {
 
     mapping(uint => Tweet) public tweets;
 
@@ -13,7 +15,7 @@ contract TweetStorage {
 
     uint latestTweetId = 0;
 
-    function createTweet(uint _userId, string memory _text) public returns(uint) {
+    function createTweet(uint _userId, string memory _text) public onlyController returns(uint) {
         latestTweetId++;
 
         tweets[latestTweetId] = Tweet(latestTweetId, _text, _userId, now);
