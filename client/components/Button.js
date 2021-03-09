@@ -1,4 +1,4 @@
-export default ({ children, style, onClick, disabled }) => (
+const Button = ({ children, style, onClick, disabled }) => (
   <button style={style} disabled={disabled} onClick={onClick}>
     {children}
 
@@ -24,3 +24,5 @@ export default ({ children, style, onClick, disabled }) => (
     `}</style>
   </button>
 );
+
+export default Button;

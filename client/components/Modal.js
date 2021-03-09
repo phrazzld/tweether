@@ -1,4 +1,4 @@
-export default ({ onClose, children }) => (
+const Modal = ({ onClose, children }) => (
   <div>
     <div className="overlay" onClick={onClose} />
 
@@ -33,3 +33,5 @@ export default ({ onClose, children }) => (
     `}</style>
   </div>
 );
+
+export default Modal;
