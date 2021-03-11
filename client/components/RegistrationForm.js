@@ -1,5 +1,7 @@
 import React from "react";
 import Button from "./Button";
+import { createUser } from '../web3/users'
+import { eth } from "../web3/provider";
 
 const Input = ({ title, value, onChange }) => (
   <div>
@@ -54,6 +56,37 @@ export default class RegistrationForm extends React.Component {
 
     this.setState(newState);
   };
+
+  createUser = async (e) => {
+    e.preventDefault()
+
+    // Some quick validation checks
+    for (let key in this.state) {
+      if (!this.state[key]) {
+        return alert(`You must fill in your ${key}!`)
+      }
+    }
+
+    const { firstName, lastName, username, bio, gravatarEmail } = this.state
+
+    console.log("this.state:", this.state)
+
+    try {
+      // Open the MetaMask modal:
+      // Do we need to fromAscii these puppies?
+      await createUser(
+        eth.extend.utils.fromAscii(username),
+        eth.extend.utils.fromAscii(firstName),
+        eth.extend.utils.fromAscii(lastName),
+        bio,
+        gravatarEmail
+      )
+
+      alert("Your user has been created!")
+    } catch (err) {
+      alert(`Sorry, we couldn't create your user: ${err}`)
+    }
+  }
 
   render() {
     return (
