@@ -3,31 +3,42 @@ import React from "react";
 import Logotype from "../icons/logotype.svg";
 import { getLoggedInUserId, getUserInfo } from "../web3/users";
 import { Center } from "./Layout";
-import Nav from './Nav'
+import Modal from "./Modal";
+import Nav from "./Nav";
+import TweetComposer from './TweetComposer'
 
 export default class Header extends React.Component {
   state = {
     loggedIn: false,
-    userInfo: {}
-  }
+    userInfo: {},
+    showComposeModal: false,
+  };
+
+  toggleComposeModal = () => {
+    const { showComposeModal } = this.state;
+
+    this.setState({
+      showComposeModal: !showComposeModal,
+    });
+  };
 
   async componentDidMount() {
     const userId = await getLoggedInUserId();
 
     try {
-      const userInfo = await getUserInfo(userId)
+      const userInfo = await getUserInfo(userId);
 
       this.setState({
         loggedIn: true,
-        userInfo
-      })
+        userInfo,
+      });
     } catch (err) {
-      console.error("Couldn't find logged in user:", err)
+      console.error("Couldn't find logged in user:", err);
     }
   }
 
   render() {
-    const { loggedIn, userInfo } = this.state
+    const { loggedIn, userInfo, showComposeModal } = this.state;
 
     return (
       <header>
@@ -38,8 +49,19 @@ export default class Header extends React.Component {
             </a>
           </Link>
 
-            {loggedIn && <Nav userInfo={userInfo} />}
+          {loggedIn && (
+            <Nav
+              userInfo={userInfo}
+              toggleComposeModal={this.toggleComposeModal}
+            />
+          )}
         </Center>
+
+        {showComposeModal && (
+          <Modal onClose={this.toggleComposeModal}>
+            <TweetComposer onClose={this.toggleComposeModal} />
+          </Modal>
+        )}
 
         <style jsx>{`
           header {

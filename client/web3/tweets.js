@@ -9,7 +9,7 @@ export const createTweet = async (text) => {
     await ethereum.enable();
     const addresses = await eth.getAccounts();
 
-    const result = await controller.createTweet(1, text, {
+    const result = await controller.createTweet(text, {
       from: addresses[0],
     });
 
