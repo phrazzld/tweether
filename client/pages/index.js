@@ -4,6 +4,8 @@ import { Center, Page } from "../components/Layout";
 import Modal from "../components/Modal";
 import RegistrationForm from "../components/RegistrationForm";
 import MetaMaskIcon from "../icons/metamask.svg";
+import { getLoggedInUserId } from '../web3/users'
+import Router from 'next/router'
 
 export default class IndexPage extends React.Component {
   state = {
@@ -17,6 +19,14 @@ export default class IndexPage extends React.Component {
       showRegisterModal: !showRegisterModal,
     });
   };
+
+  async componentDidMount() {
+    const userId = await getLoggedInUserId()
+
+    if (userId) {
+      Router.replace("/home")
+    }
+  }
 
   render() {
     const { showRegisterModal } = this.state;

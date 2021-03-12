@@ -6,6 +6,7 @@ contract TweetStorage is BaseStorage {
 
     mapping(uint => Tweet) public tweets;
     mapping(uint => uint[]) userTweetIds;
+    uint[] public tweetIds;
 
     struct Tweet {
         uint id;
@@ -21,12 +22,17 @@ contract TweetStorage is BaseStorage {
 
         tweets[latestTweetId] = Tweet(latestTweetId, _text, _userId, now);
         userTweetIds[_userId].push(latestTweetId);
+        tweetIds.push(latestTweetId);
 
         return latestTweetId;
     }
 
     function getTweetIdsFromUser(uint _userId) view public returns(uint[] memory) {
         return userTweetIds[_userId];
+    }
+
+    function getNumTweets() view public returns(uint _numTweets) {
+        return tweetIds.length;
     }
 
 }

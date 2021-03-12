@@ -36,8 +36,15 @@ export const getLoggedInUserId = async () => {
   }
 };
 
+export const getUserIdFromUsername = async (username) => {
+  const storage = await getInstance(UserStorage);
+  const encodedUsername = eth.extend.utils.fromAscii(username)
+  const userId = await storage.usernames.call(encodedUsername);
+
+  return userId;
+};
+
 export const createUser = async (...params) => {
-  //export const createUser = async (username) => {
   try {
     console.log("createUser: params:", params);
     await ethereum.enable();
@@ -49,7 +56,6 @@ export const createUser = async (...params) => {
     // eth.extend.utils works
     const result = await controller.createUser(
       ...params,
-      //eth.extend.utils.fromAscii(username),
       {
         from: addresses[0],
       }
